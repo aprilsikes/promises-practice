@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var knex = require('../db/knex');
-var helpers = require('../lib/helpers')
+var helpers = require('../lib/helpers');
+var Promise = require('bluebird');
 
 function Books() {
   return knex('books');
@@ -63,11 +64,22 @@ router.get('/:id/edit', function(req, res, next) {
 });
 
 router.get('/:id', function(req, res, next) {
-  // find the book in Books
-  // get all associated records from Authors_Books
-  // using Promise.all map over the array of records
-  // return an array of book authors
-  // pass array of book authors to the view using locals
+  Books().where('id', req.params.id).first().then(function (book) {
+    Authors_Books().where('book_id', book.id).then(function (results) {
+      Promise.all(results.map(function (result) {
+        return Authors().where('id', result.author_id).first();
+      }))
+      .then(function (authors) {
+        res.render('books/show', {book: book, authors: authors})
+      })
+    })
+  })
+
+  // find the book in Books √
+  // get all associated records from Authors_Books √
+  // using Promise.all map over the array of records √
+  // return an array of book authors √
+  // pass array of book authors to the view using locals √
 });
 
 router.post('/:id', function(req, res, next) {
