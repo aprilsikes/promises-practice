@@ -18,6 +18,17 @@ function Authors_Books() {
 
 
 router.get('/', function(req, res, next) {
+  Authors().select().then(function (authors) {
+    Promise.all(authors.map(function (author) {
+      return helpers.getAuthorBooks(author).then(function (books) {
+        author.books = books;
+        return author;
+      });
+    }))
+    .then(function (authors) {
+      res.render('authors/index', {authors: authors})
+    })
+  })
   // get all authors from Authors
   // using Promise.all map over the array of authors
   // for each author, get author books
