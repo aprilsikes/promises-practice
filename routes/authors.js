@@ -29,11 +29,11 @@ router.get('/', function(req, res, next) {
       res.render('authors/index', {authors: authors})
     })
   })
-  // get all authors from Authors
-  // using Promise.all map over the array of authors
-  // for each author, get author books
-  // add a property to each author object that is an array of its book objects
-  // pass an array of authors to the view using locals
+  // get all authors from Authors √
+  // using Promise.all map over the array of authors √
+  // for each author, get author books √
+  // add a property to each author object that is an array of its book objects √
+  // pass an array of authors to the view using locals √
 
 });
 
