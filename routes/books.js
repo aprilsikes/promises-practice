@@ -56,11 +56,11 @@ router.get('/:id/delete', function(req, res, next) {
   })
 
 
-  // find the book in Books
-  // get all associated records from Authors_Books
-  // using Promise.all map over the array of records
-  // return an array of book authors
-  // pass array of book authors to the view using locals
+  // find the book in Books √
+  // get all associated records from Authors_Books √
+  // using Promise.all map over the array of records √
+  // return an array of book authors √
+  // pass array of book authors to the view using locals √
 });
 
 router.post('/:id/delete', function(req, res, next) {

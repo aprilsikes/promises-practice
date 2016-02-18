@@ -81,11 +81,22 @@ router.post('/:id', function (req, res, next) {
 })
 
 router.get('/:id', function (req, res, next) {
-  // find the author in Authors
-  // get all associated records from Authors_Books
-  // using Promise.all map over the array of records
-  // return an array of author books from Books
-  // pass array of author books to the view using locals
+  Authors().where('id', req.params.id).first().then(function (author) {
+    Authors_Books().where('author_id', author.id).then(function (results) {
+      Promise.all(results.map(function (result) {
+          return Books().where('id', result.book_id).first();
+      }))
+      .then(function (books) {
+        res.render('authors/show', {author: author, books: books})
+      })
+    })
+  })
+
+  // find the author in Authors √
+  // get all associated records from Authors_Books √
+  // using Promise.all map over the array of records √
+  // return an array of author books from Books √
+  // pass array of author books to the view using locals √
 })
 
 module.exports = router;
