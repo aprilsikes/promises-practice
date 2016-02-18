@@ -44,6 +44,18 @@ router.post('/', function (req, res, next) {
 })
 
 router.get('/:id/delete', function(req, res, next) {
+  Books().where('id', req.params.id).first().then(function (book) {
+    Authors_Books().where('book_id', book.id).then(function (results) {
+      Promise.all(results.map(function (result) {
+        return Authors().where('id', result.author_id).first();
+      }))
+      .then(function (authors) {
+        res.render('books/delete', {book: book, authors, authors})
+      })
+    })
+  })
+
+
   // find the book in Books
   // get all associated records from Authors_Books
   // using Promise.all map over the array of records
